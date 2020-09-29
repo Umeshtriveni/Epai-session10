@@ -1,0 +1,12 @@
+[
+  "test_session10.py::test_readme_exists",
+  "test_session10.py::test_readme_contents",
+  "test_session10.py::test_readme_proper_description",
+  "test_session10.py::test_readme_file_for_formatting",
+  "test_session10.py::test_indentations",
+  "test_session10.py::test_function_name_had_cap_letter",
+  "test_session10.py::test_function_doc_string",
+  "test_session10.py::test_function_annotations",
+  "test_session10.py::test_gen_profiles_tuples",
+  "test_session10.py::test_gen_profiles_dict"
+]
