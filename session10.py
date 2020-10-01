@@ -6,6 +6,7 @@ from functools import wraps
 import re
 import random
 import string
+from datetime import date
 
 fake = Faker()
 
@@ -100,3 +101,40 @@ def calc_data_using_dictionary() -> "Dictionary":
     bg_l = max(blood_gp, key=blood_gp.get)
     mean_current_location = (cur_loc_coord_sum[0]/no_profiles, cur_loc_coord_sum[1]/no_profiles)
     return {'largest_blood_type': (bg_l, blood_gp[bg_l]), 'mean_current_location': mean_current_location, 'oldest_person': (max_age['profile'], int(max_age['age']/365)), 'average_age': int(sum_ages/no_profiles)}
+
+def get_capitalized_letters(string) -> str: 
+    """Returns joined string if characters are upper case"""
+    return ''.join(x for x in string if x.isupper())
+
+
+def stock_market()-> None: 
+    """
+    To create a fake stock data set for imaginary stock exchange for top 100 companies (name, symbol, open, high, close).
+    Tasks_ToDo: Assign a random weight to all the companies. Calculate and show what value stock market started at, what was the highest value during the day and where did it end.
+    """
+    all_companies = []
+    Stocks = namedtuple("Stocks", 'name symbol open high close company_weight')
+    for _ in range(100):
+        name = fake.company()
+        open_ = round(random.uniform(41, 3999), 2)
+        high_num = round(random.uniform(0.613, 1.4), 2)  # market is damn volatile
+        high = open_ * high_num if high_num > 1.0 else open_
+        close = random.uniform(open_ - random.randint(-10, 10), high + random.randint(-8, 10))
+        if close > high:
+            high = close
+
+        all_companies.append(
+            Stocks(name=name, symbol=get_capitalized_letters(name), open=open_, high=round(high, 2), close=round(close, 2), company_weight=round(random.uniform(15, 80), 3)))
+
+    stock_index = round(sum(x.open * x.company_weight for x in all_companies), 4)
+    highest_for_day = round(max(x.high * x.company_weight for x in all_companies), 2)
+    lowest_close_for_day = round(min(x.close * x.company_weight for x in all_companies), 2)
+
+    print(f"\n------------------------------------Top 100 listed companies on TSAI Stock Exchange------------------------------------")
+    [print(x) for x in sorted(all_companies, key=lambda x:x.symbol)]
+    print(f"\n--------------Main details on {date.today()}--------------")
+    print(f"\nStock Index: {stock_index}")
+    print(f"Highest for the day: {highest_for_day}")
+    print(f"Lowest close for the day: {lowest_close_for_day}")
+
+
